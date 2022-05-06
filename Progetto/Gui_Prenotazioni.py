@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import tkinter.font as font
 from tkinter import messagebox
 import mysql.connector
 
@@ -62,8 +63,9 @@ def tab():
 
         Display()
         tv.pack()
-        Booking = Button(cv1, text="Prenota", command=prenota)
-        Booking.place(x=1050, y=100)
+        Booking = Button(cv1, text="Prenota", command=prenota, bg='green',
+                         fg='white', relief='flat', width=30, height=13)
+        Booking.place(x=1000, y=27)
         tab()
 
     def Prenotazioni():
@@ -86,7 +88,7 @@ def tab():
             conn = mysql.connector.connect(host="localhost", port="3306", user="root", password="tweb",
                                            database="dbprog")
             cursor = conn.cursor()
-            query_sel = "select nome_docente, cognome_docente, corso, giorno, ora, stato from prenotazione where utente like 'Py_user' order by ora"
+            query_sel = "select nome_docente, cognome_docente, corso, giorno, ora, stato from prenotazione where utente like 'Py_user' order by stato, ora"
             cursor.execute(query_sel)
             records = cursor.fetchall()
             if len(records) != 0:
@@ -115,6 +117,7 @@ def tab():
                 cursor.execute(update_query, rip)
                 cursor.execute(insert_query, booking)
                 conn.commit()
+                messagebox.showinfo("showinfo", "Prenotazione effettuata con successo")
                 Display()
 
         def cancel_Booking():
@@ -136,6 +139,7 @@ def tab():
                 cursor.execute(update_query, rip)
                 cursor.execute(insert_query, booking)
                 conn.commit()
+                messagebox.showinfo("showinfo", "Prenotazione cancellata con successo")
                 Display()
 
         Display()
@@ -148,9 +152,14 @@ def tab():
         cancel_Booking.place(x=997, y=120)
         tab()
 
-    tab1 = Button(root, text="Ripetizioni disponibili", command=Ripetizioni)
+    tab1 = Button(root, text="RIPETIZIONI DISPONIBILI", command=Ripetizioni, bg='grey',
+                  fg='white', relief='flat', width=27, height=4)
+    myFont = font.Font(weight="bold", family='sans serif', size=9)
+    tab1['font'] = myFont
     tab1.place(x=400, y=80)
-    tab2 = Button(root, text="Le tue prenotazioni", command=Prenotazioni)
+    tab2 = Button(root, text="LE TUE PRENOTAZIONI", command=Prenotazioni, relief='flat', bg='red',
+                  fg='white', width=28, height=4)
+    tab2['font'] = myFont
     tab2.place(x=600, y=80)
 
 
